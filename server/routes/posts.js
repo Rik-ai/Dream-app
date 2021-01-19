@@ -6,6 +6,7 @@ const router = express.Router()
 
 router.get('/', posts.getPosts)
 router.post('/', posts.createPosts)
+router.patch('/:id', posts.updatePost)
 
 
 module.exports = router
