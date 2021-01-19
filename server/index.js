@@ -7,13 +7,11 @@ const postRoutes = require('./routes/posts')
 
 const app = express()
 
-app.use('/posts', postRoutes)
-
-
 app.use(bodyParser.json({limit:'30mb', extended: true}))
 app.use(bodyParser.urlencoded({limit:'30mb', extended: true}))
 app.use(cors())
 
+app.use('/posts', postRoutes)
 
 const CONNECTION_URL = 'mongodb+srv://dream-app:dream-app123@cluster0.ne4t7.mongodb.net/dream?retryWrites=true&w=majority'
 
