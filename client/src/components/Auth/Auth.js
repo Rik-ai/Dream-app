@@ -1,12 +1,15 @@
 import React, { useState } from 'react'
-import { Avatar, Button, Paper, Grid, Typography, Container, TextField } from '@material-ui/core'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Input from './Input'
+import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core'
 import { GoogleLogin } from 'react-google-login'
-import useStyles from './styles'
-import Icon from './icon'
-import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import useStyles from './styles'
+import Input from './Input'
+import Icon from './icon'
+import { signup, signin } from '../../actions/auth'
+
+const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: ''}
 
 const Auth = () => {
     const classes = useStyles()
@@ -15,12 +18,19 @@ const Auth = () => {
     const handleShowPassword = () => setShowPassword((prevShowPassword) => !prevShowPassword)
     const dispatch = useDispatch()
     const history = useHistory()
+    const [formData, setFormData] = useState(initialState)
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
 
+        if(isSignup) {
+            dispatch(signup(formData, history))
+        } else {
+            dispatch(signin(formData, history))
+        }
     }
-    const handleChange = () => {
-
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     const switchMode = () => {
@@ -55,7 +65,7 @@ const Auth = () => {
                         {isSignup && (
                                 <>
                                     <Input name='firstName' label='First Name' handleChange={handleChange} autoFocus half/>
-                                    <Input name='firstName' label='First Name' handleChange={handleChange} half/>
+                                    <Input name='lastName' label='Last Name' handleChange={handleChange} half/>
                                 </>
                             )}
                             <Input name='email' label='Email Address' handleChange={handleChange} type='email'/>
